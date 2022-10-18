@@ -52,29 +52,42 @@ public class KredytBB {
 	public Double getRata() {
 		return rata;
 	}
-
-
-	public void setRata(Double rata) {
-		this.rata = rata;
-	}
-
-
-	// Go to "showresult" if ok
-	public String calc() {
+	
+	public boolean doTheMath() {
 		try {
-			//obliczenia
 			double kwota = Double.parseDouble(this.kwota);
 			double okres = Double.parseDouble(this.okres);
 			double oprocentowanie = Double.parseDouble(this.oprocentowanie);
 			
 			rata = (kwota + (kwota * (oprocentowanie / 100))) / okres;
 			rata = (double)Math.round(rata * 100d) / 100d;
-			return "showresult";
+
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operacja wykonana poprawnie", null));
+			return true;
 		} catch (Exception e) {
 			ctx.addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas przetwarzania parametrów", null));
-			return "index";
+			return false;
 		}
 	}
+	
+	// Go to "showresult" if ok
+	public String calc() {
+		if (doTheMath()) {
+			return "showresult";
+		}
+		return null;
+	}
+	
+	// Put result in messages on AJAX call
+	public String calc_AJAX() {
+		if (doTheMath()) {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Rata wyniesie: " + rata, null));
+		}
+		return null;
+	}
 
+	public String info() {
+		return "info";
+	}
 }

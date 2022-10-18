@@ -3,26 +3,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Kalkulator kredytowy</title>
 </h:head>
 <h:body>
 
-	<h1>Kalkulator kredytowy</h1>
+	<p:panel header="Kalkulator kredytowy" toggleable="true"
+		toggleSpeed="500" style="margin: 1em auto;">
 
-	<h:form id="bla">
-  		Kwota kredytu: <h:inputText value="#{kredytBB.kwota}" />
-		<br />
-  		Okres spłaty: <h:inputText value="#{kredytBB.okres}" />
-		<br />
-		Oprocentowanie: <h:inputText value="#{kredytBB.oprocentowanie}" />
-		<br />
-		<h:messages id="msg" />
 
-		<h:commandButton value="Oblicz ratę kredytu" action="#{kredytBB.calc()}"/>
-		<br />
-	</h:form>
+		<h:form id="bla">
+		
+			<h:panelGrid id="grid" columns="3" cellpadding="7">
+			
+				<p:outputLabel for="kwota" value="Kwota kredytu:" />
+				<p:inputText id="kwota" value="#{kredytBB.kwota}" required="true"
+					requiredMessage="Nie podano kwoty" />
+				<p:message for="kwota" />
 
+				<p:outputLabel for="okres" value="Okres spłaty:" />
+				<p:inputText id="okres" value="#{kredytBB.okres}" required="true"
+					requiredMessage="Nie podano okresu" />
+				<p:message for="okres" />
+
+				<p:outputLabel for="oprocentowanie" value="Oprocentowanie kredytu:" />
+				<p:inputText id="oprocentowanie" value="#{kredytBB.oprocentowanie}"
+					required="true" requiredMessage="Nie podano oprocentowania" />
+				<p:message for="oprocentowanie" />
+
+				<p:commandButton value="Oblicz ratę kredytu"
+					action="#{kredytBB.calc()}" update="@form" styleClass="rounded-button ui-button-secondary"/>
+				<p:commandButton value="Oblicz ratę kredytu (AJAX)"
+					action="#{kredytBB.calc_AJAX()}" update="msg" styleClass="rounded-button ui-button-secondary"/>
+
+			</h:panelGrid>
+
+			<p:growl id="msg" showDetail="true" sticky="true" />
+			<h:commandLink value="Informacje" action="#{kredytBB.info()}"/>
+
+		</h:form>
+	</p:panel>
 </h:body>
 </html>
