@@ -1,50 +1,52 @@
 package com.jsfcourse.calc;
 
 import javax.inject.Inject;
+
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import static java.lang.Math.pow;
 
 @Named
 @RequestScoped
 //@SessionScoped
 public class KredytBB {
-	private String kwota;
-	private String okres;
-	private String oprocentowanie;
+	private Double kwota;
+	private Integer okres;
+	private Double oprocentowanie;
 	private Double rata;
 
 	@Inject
 	FacesContext ctx;
 
-	public String getKwota() {
+	public Double getKwota() {
 		return kwota;
 	}
 
 
-	public void setKwota(String kwota) {
+	public void setKwota(Double kwota) {
 		this.kwota = kwota;
 	}
 
 
-	public String getOkres() {
+	public Integer getOkres() {
 		return okres;
 	}
 
 
-	public void setOkres(String okres) {
+	public void setOkres(Integer okres) {
 		this.okres = okres;
 	}
 
 
-	public String getOprocentowanie() {
+	public Double getOprocentowanie() {
 		return oprocentowanie;
 	}
 
 
-	public void setOprocentowanie(String oprocentowanie) {
+	public void setOprocentowanie(Double oprocentowanie) {
 		this.oprocentowanie = oprocentowanie;
 	}
 
@@ -55,11 +57,8 @@ public class KredytBB {
 	
 	public boolean doTheMath() {
 		try {
-			double kwota = Double.parseDouble(this.kwota);
-			double okres = Double.parseDouble(this.okres);
-			double oprocentowanie = Double.parseDouble(this.oprocentowanie);
 			
-			rata = (kwota + (kwota * (oprocentowanie / 100))) / okres;
+			rata = (kwota * ((oprocentowanie / 100) / 12) * (pow(1 + ((oprocentowanie / 100) / 12), okres)) / (pow(1 + ((oprocentowanie / 100) / 12), okres) - 1));
 			rata = (double)Math.round(rata * 100d) / 100d;
 
 			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operacja wykonana poprawnie", null));

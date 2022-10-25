@@ -17,26 +17,35 @@
 		<h:form id="bla">
 		
 			<h:panelGrid id="grid" columns="3" cellpadding="7">
-			
-				<p:outputLabel for="kwota" value="Kwota kredytu:" />
+
+				<p:outputLabel for="kwota" value="Kwota kredytu (zł):" />
 				<p:inputText id="kwota" value="#{kredytBB.kwota}" required="true"
-					requiredMessage="Nie podano kwoty" />
+					requiredMessage="Nie podano kwoty" validatorMessage="Kwota musi być pomiędzy 1 000zł a 200 000zł" converterMessage="Kwota musi być liczbą bez spacji">
+					<f:validateDoubleRange minimum="1000" maximum="200000" />
+				</p:inputText>
 				<p:message for="kwota" />
 
-				<p:outputLabel for="okres" value="Okres spłaty:" />
+				<p:outputLabel for="okres" value="Okres spłaty (mies):" />
 				<p:inputText id="okres" value="#{kredytBB.okres}" required="true"
-					requiredMessage="Nie podano okresu" />
+					requiredMessage="Nie podano okresu" validatorMessage="Okres musi być maksymalnie 2 cyfrowy">
+					<f:validateLength minimum="1" maximum="2" />
+				</p:inputText>
 				<p:message for="okres" />
 
-				<p:outputLabel for="oprocentowanie" value="Oprocentowanie kredytu:" />
+				<p:outputLabel for="oprocentowanie"
+					value="Oprocentowanie kredytu (%):" />
 				<p:inputText id="oprocentowanie" value="#{kredytBB.oprocentowanie}"
-					required="true" requiredMessage="Nie podano oprocentowania" />
+					required="true" requiredMessage="Nie podano oprocentowania" validatorMessage="Oprocentowanie musi być pomiędzy 0.5% a 20%" converterMessage="Oprocentowanie musi być zapisane z . np. 4.5">
+					<f:validateDoubleRange minimum="0.5" maximum="20" />
+				</p:inputText>
 				<p:message for="oprocentowanie" />
 
 				<p:commandButton value="Oblicz ratę kredytu"
-					action="#{kredytBB.calc()}" update="@form" styleClass="rounded-button ui-button-secondary"/>
+					action="#{kredytBB.calc()}" update="@form"
+					styleClass="rounded-button ui-button-secondary" />
 				<p:commandButton value="Oblicz ratę kredytu (AJAX)"
-					action="#{kredytBB.calc_AJAX()}" update="msg" styleClass="rounded-button ui-button-secondary"/>
+					action="#{kredytBB.calc_AJAX()}" update="msg"
+					styleClass="rounded-button ui-button-secondary" />
 
 			</h:panelGrid>
 
